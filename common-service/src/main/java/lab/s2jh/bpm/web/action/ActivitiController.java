@@ -2,15 +2,9 @@ package lab.s2jh.bpm.web.action;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ResourceBundle.Control;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
-
-import lab.s2jh.bpm.service.ActivitiService;
-import lab.s2jh.core.exception.WebException;
-import lab.s2jh.core.web.SimpleController;
-import lab.s2jh.core.web.annotation.SecurityControlIgnore;
 
 import org.activiti.engine.FormService;
 import org.activiti.engine.HistoryService;
@@ -25,6 +19,11 @@ import org.apache.struts2.rest.HttpHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import lab.s2jh.bpm.service.ActivitiService;
+import lab.s2jh.core.exception.WebException;
+import lab.s2jh.core.web.SimpleController;
+import lab.s2jh.core.web.annotation.SecurityControlIgnore;
 
 public class ActivitiController extends SimpleController {
 

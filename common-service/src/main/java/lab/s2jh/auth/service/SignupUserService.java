@@ -4,6 +4,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
 import lab.s2jh.auth.dao.SignupUserDao;
 import lab.s2jh.auth.dao.UserDao;
 import lab.s2jh.auth.dao.UserR2RoleDao;
@@ -13,14 +20,6 @@ import lab.s2jh.auth.entity.User;
 import lab.s2jh.auth.entity.UserR2Role;
 import lab.s2jh.core.dao.BaseDao;
 import lab.s2jh.core.service.BaseService;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.encoding.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 @Service
 @Transactional

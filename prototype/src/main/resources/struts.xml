@@ -52,7 +52,7 @@
 
     <package name="crud-default" extends="rest-default,jasperreports-default">
         <result-types>
-            <result-type name="extJasper" class="org.apache.struts2.views.jasperreports.ExtJasperReportsResult" />
+            <result-type name="extJasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult" />
         </result-types>
 
         <interceptors>

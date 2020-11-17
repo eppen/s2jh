@@ -9,9 +9,6 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import lab.s2jh.bpm.BpmTrackable;
-import lab.s2jh.core.security.AuthContextHolder;
-
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.engine.FormService;
 import org.activiti.engine.HistoryService;
@@ -21,7 +18,6 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.impl.RepositoryServiceImpl;
-import org.activiti.engine.impl.bpmn.diagram.ProcessDiagramGenerator;
 import org.activiti.engine.impl.context.Context;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
@@ -31,6 +27,8 @@ import org.activiti.engine.impl.pvm.process.ProcessDefinitionImpl;
 import org.activiti.engine.impl.pvm.process.TransitionImpl;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
+import org.activiti.image.ProcessDiagramGenerator;
+import org.activiti.image.impl.DefaultProcessDiagramGenerator;
 import org.activiti.spring.ProcessEngineFactoryBean;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -43,6 +41,9 @@ import org.springframework.util.Assert;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
+import lab.s2jh.bpm.BpmTrackable;
+import lab.s2jh.core.security.AuthContextHolder;
 
 @Service
 @Transactional
@@ -171,7 +172,7 @@ public class ActivitiService {
 
         List<String> highLightedFlows = getHighLightedFlows(processDefinition, processInstance.getProcessInstanceId());
 
-        InputStream imageStream = ProcessDiagramGenerator.generateDiagram(bpmnModel, "png", activeActivityIds,
+        InputStream imageStream =new DefaultProcessDiagramGenerator().generateDiagram(bpmnModel, "png", activeActivityIds,
                 highLightedFlows);
         return imageStream;
     }

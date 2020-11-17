@@ -5,12 +5,8 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Map;
 
-import lab.s2jh.core.exception.ServiceException;
-import lab.s2jh.core.service.PropertiesConfigService;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,6 +15,8 @@ import org.springframework.util.Assert;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
+import lab.s2jh.core.exception.ServiceException;
+import lab.s2jh.core.service.PropertiesConfigService;
 
 @Service
 public class FreemarkerService extends Configuration {

@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.google.common.collect.Maps;
+import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.inject.Inject;
 
 public class Jackson2LibHandler implements ContentTypeHandler {
@@ -77,4 +78,39 @@ public class Jackson2LibHandler implements ContentTypeHandler {
     public static void setJsonPropertyFilter(SimpleBeanPropertyFilter simpleBeanPropertyFilter) {
         simpleBeanPropertyFilterContainer.set(simpleBeanPropertyFilter);
     }
+
+	@Override
+	public String fromObject(ActionInvocation invocation, Object obj, String resultCode, Writer stream) throws IOException {
+		// TODO Auto-generated method stub
+		 ObjectMapper mapper = HibernateAwareObjectMapper.getInstance();
+	        if (obj instanceof Throwable) {
+	            HttpServletRequest request = ServletActionContext.getRequest();
+	            String msg = ExceptionLogger.logForHttpRequest((Throwable) obj, request);
+	            Map<String, String> errors = Maps.newHashMap();
+	            errors.put("type", "error");
+	            errors.put("message", msg);
+	            mapper.writeValue(stream, errors);
+	        } else {
+	            SimpleBeanPropertyFilter simpleBeanPropertyFilter = simpleBeanPropertyFilterContainer.get();
+	            FilterProvider filters = null;
+	            if (simpleBeanPropertyFilter != null) {
+	                filters = new SimpleFilterProvider().addFilter(DEFAULT_JSON_FILTER_NAME, simpleBeanPropertyFilter);
+	            } else {
+	                filters = serializeAllFilterProvider;
+	            }
+	            mapper.writer(filters).writeValue(stream, obj);
+	        }
+	        return null;
+		
+		
+	}
+
+	@Override
+	public void toObject(ActionInvocation invocation, Reader in, Object target) throws IOException {
+		// TODO Auto-generated method stub
+		
+		  ObjectReader or = HibernateAwareObjectMapper.getInstance().readerForUpdating(target);
+	        or.readValue(in); //, new TypeReference<clazz>);
+		
+	}
 }

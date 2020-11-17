@@ -309,7 +309,7 @@ public class ExtJasperReportsResult extends StrutsResultSupport implements Jaspe
         try {
             JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile(systemId);
             if (conn == null) {
-                ValueStackDataSource stackDataSource = new ValueStackDataSource(stack, dataSource);
+                ValueStackDataSource stackDataSource = new ValueStackDataSource(stack, dataSource,true);//TODO
                 jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, stackDataSource);
             } else {
                 jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, conn);

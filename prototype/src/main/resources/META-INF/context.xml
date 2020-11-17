@@ -1,0 +1,6 @@
+
+    	<Resource name="jdbc/s2jh" auth="Container" type="javax.sql.DataSource"
+	initialSize="3" maxActive="25" maxIdle="10" maxWait="3000"
+	username="root" password="root" 		
+	driverClassName="com.mysql.jdbc.Driver"
+	url="jdbc:mysql://127.0.0.1:3306/s2jh"/>

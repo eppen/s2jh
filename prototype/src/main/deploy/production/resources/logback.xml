@@ -6,15 +6,14 @@
 		</encoder>
 	</appender>
 
-	<appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
+<!-- 	<appender name="DB" class="ch.qos.logback.classic.db.DBAppender">
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>ERROR</level>
 		</filter>
 		<connectionSource class="ch.qos.logback.core.db.JNDIConnectionSource">
-			<!-- please note the "java:comp/env/" prefix -->
 			<jndiLocation>java:comp/env/jdbc/s2jh</jndiLocation>
 		</connectionSource>
-	</appender>
+	</appender> -->
 
 	<!-- 建议设置为WARN或更低级别，此Logger主要用于Struts显示以404错误代码返回的Could not find action or result信息，用于排除编码错误 -->
 	<logger name="org.apache.struts2.dispatcher" level="WARN" additivity="false">

@@ -20,22 +20,64 @@
         </bean>
 
         <!-- H2文件模式数据库，实际开发替换成其他MySQL、Oracle等数据库配置即可，注意别忘了在pom.xml中添加对应数据库驱动的依赖 -->
-        <bean id="dataSourceSpied" class="org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseFactoryBean">
+        <!-- <bean id="dataSourceSpied" class="org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseFactoryBean">
             <property name="databaseName" value="${user.dir}/h2/prototype" />
             <property name="databaseConfigurer">
                 <bean class="lab.s2jh.core.dao.h2.H2EmbeddedFileDatabaseConfigurer" />
             </property>
-        </bean>
-
+        </bean> -->
+        
+        <!-- <jee:jndi-lookup id="dataSourceSpied" jndi-name="java:comp/env/jdbc/s2jh" />
+ -->
         <!-- 定制log4jdbc做一些输出SQL信息的微调 -->
-        <bean id="extSlf4jSpyLogDelegator" class="lab.s2jh.core.dao.log4jdbc.ExtSlf4jSpyLogDelegator" />
-
+      <!--   <bean id="extSlf4jSpyLogDelegator" class="lab.s2jh.core.dao.log4jdbc.ExtSlf4jSpyLogDelegator" />
+ -->
         <!-- 用log4jdbc对datasouce进行包裹实现完整的SQL语句跟踪 -->
-        <bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource" depends-on="extSlf4jSpyLogDelegator">
+   <!--      <bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource" depends-on="extSlf4jSpyLogDelegator">
             <constructor-arg>
                 <ref bean="dataSourceSpied" />
             </constructor-arg>
-        </bean>
+        </bean> -->
+        
+        
+        <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close"> 
+	    <!-- 公司测试库 --> 
+	    <property name="url" value="${jdbc.url}" />  
+	    <property name="username" value="${jdbc.username}" />
+	    <property name="password" value="${jdbc.password}" />
+	    
+	    <!-- 配置初始化大小、最小、最大 -->
+	    
+	    <property name="maxActive" value="150"/>
+	   <!--  <property name="maxIdle" value="50"/> -->
+	    <property name="minIdle" value="1" /> 
+	     <property name="initialSize" value="1" />
+	    <property name="maxWait" value="10000"/>
+	   <!--   <property name="filters" value="stat" />  -->
+	    <property name="removeAbandoned" value="true" /> 			<!-- 打开removeAbandoned功能 -->
+	    <property name="removeAbandonedTimeout" value="900" /> 		<!-- 900秒，也就是15分钟 -->
+	    <property name="logAbandoned" value="true" /> 				<!-- 关闭abandoned连接时输出错误日志 -->
+	    
+	    <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+      <property name="timeBetweenEvictionRunsMillis" value="60000" />
+   
+      <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+      <property name="minEvictableIdleTimeMillis" value="300000" />
+	    
+	  <property name="validationQuery" value="SELECT 'x' FROM DUAL" />
+      <property name="testWhileIdle" value="true" />
+      <property name="testOnBorrow" value="false" />
+      <property name="testOnReturn" value="false" />
+	    
+	    <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+	    <property name="poolPreparedStatements" value="true" />
+	    <property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
+	    
+	     <!-- 配置监控统计拦截的filters -->
+         <property name="filters" value="stat" /> 
+      
+	  </bean> 
+	  
 
         <jdbc:initialize-database data-source="dataSource" ignore-failures="ALL"
             enabled="${jdbc.initialize.database.enable}">
@@ -127,7 +169,7 @@
                     <!-- 创建MySQL UTF-8编码数据库脚本：CREATE DATABASE s2jh DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci; -->
                     <property name="url" value="jdbc:mysql://localhost:3306/s2jh?characterEncoding=utf8" />
                     <property name="username" value="root" />
-                    <property name="password" value="" />
+                    <property name="password" value="root" />
                 </bean>
             </property>
         </bean>
